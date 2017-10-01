@@ -1,22 +1,7 @@
 "#SearchByStockNumber" 
 
-I am still figuring out how to use github.
-I followed a tutorial to upload my project here, but for some reason my java files were not uploaded sucessfully on the first try, only the files in the workspace/ folder were uploaded.
-I uploaded the actual java source code after an hour of struggling, but the file structure here on github is not what it should be.
-
-Intened file structure:
-workspace/
-  -.settings
-        -org.eclipse.jdt.core.prefs
-  -bin
-        -application
-          searchbystock$1.class
-          searchbystock$2.class
-          searchbystock.class
-  -src
-        -application
-          searchbystock.java
-  .classpath
-  .project
-  build.fxbuild
- 
+This program searches for a user defined stock number in a user defined text file.
+My initial goal when creating this project was to make a program with a GUI that does something meaningful.
+Now that I have it working, I want to:
+1. Make my code more modular and readable
+2. Format my GUI to look nice.
