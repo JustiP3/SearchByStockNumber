@@ -9,6 +9,8 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -34,6 +36,30 @@ public class SearchByStock  extends Application {
 		}
 		}
 
+	public void display (Stage stage) {
+		if (text != null && click != null){
+			root = new HBox();
+			root.getChildren().addAll(text, click);
+		}
+		if (text == null) {
+			root = new HBox();
+			root.getChildren().add(click);
+		}
+		if (click == null) {
+			root = new HBox();
+			root.getChildren().add(text);
+		}
+		Scene displaythis = new Scene(root, 500, 200);
+		stage.setScene(displaythis);
+		stage.show();
+	}
+	public void display (Stage stage, TextField stocknum){
+		root = new HBox();
+		root.getChildren().addAll(text, stocknum, click);
+		Scene displaythis = new Scene(root, 500, 200);
+		stage.setScene(displaythis);
+		stage.show();
+	}
 
 	public void displayGreeting(Stage stage) {
 		stage.setTitle("Search By Stock Number");
@@ -46,35 +72,32 @@ public class SearchByStock  extends Application {
 			}
 		});
 
-		root = new HBox();
-		root.getChildren().addAll(text, click);
-		Scene greeting = new Scene(root, 500, 200);
-		stage.setScene(greeting);
-		stage.show();
+		display(stage);
 
 		}
 	public void promptStockNum(Stage stage) {
 		text.setText("Enter Stock Number: ");
 		TextField input = new TextField();
 		click.setText("Submit");
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Notification");
+		alert.setHeaderText(null);
+		alert.setContentText("Please Enter a Stock Number");
+		alert.showAndWait();
 		click.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				if (input != null) {
+				if (input != null && input.getLength() != 0) {
 					stockNumber = input.getText();
 					promptFileLoc(stage);
+				} else {
+					alert.showAndWait();
 				}
-				//else {
-				//notification prompt : "enter text"
-				//}
+
 
 			}
 		});
-		root = new HBox();
-		root.getChildren().addAll(text, input, click);
-		Scene enterStockNumber = new Scene(root, 500,200);
-		stage.setScene(enterStockNumber);
-		stage.show();
+		display(stage,input);
 	}
 	public void promptFileLoc(Stage stage){
 		click.setText("Select File Location");
@@ -87,19 +110,13 @@ public class SearchByStock  extends Application {
 			boolean match = Search(selectedfile);
 			if (match == true) {
 				text.setText("It's a Match: " + stockNumber);
-				HBox poop = new HBox();
-				poop.getChildren().add(text);
-				Scene endScene = new Scene(poop, 500, 200);
-				stage.setScene(endScene);
-				stage.show();
+				click = null;
+				display(stage);
 
 			}else{
 				text.setText("No Match: " + stockNumber);
-				HBox poop = new HBox();
-				poop.getChildren().add(text);
-				Scene endScene = new Scene(poop, 500, 200);
-				stage.setScene(endScene);
-				stage.show();
+				click = null;
+				display(stage);
 			};
 		}
 
@@ -117,7 +134,8 @@ public class SearchByStock  extends Application {
 					}}
 				if (match == false) {
 					return false;
-				}}catch(IOException e) {
+				}}
+		catch(IOException e) {
 					e.printStackTrace();
 				}
 		return false;
